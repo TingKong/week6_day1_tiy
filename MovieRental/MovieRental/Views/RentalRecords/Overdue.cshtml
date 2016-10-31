@@ -6,4 +6,46 @@
 }
 
 <h2>Overdue</h2>
+@{
+    MovieRentalEntities db = new MovieRentalEntities();
 
+
+    var custName = from b in db.Customers
+                   join r in db.RentalRecords on b.CustomerID equals r.CustomerID
+                   join c in db.Movies on r.MovieID equals c.MovieID
+                  
+
+
+                   where r.DueDate < DateTime.Today
+                   select new
+                   {
+                       cn = b.CustomerName,
+                       mn = c.MovieName,
+                       dd = r.DueDate
+                   };
+
+    foreach (var late in custName)
+    {
+        <p>Customer Name: @late.cn has an overdue rental for @late.mn. Due date on @string.Format("{0:MM/dd/yyyy}", late.dd)</p>
+    }
+
+
+}
+
+
+
+@*@for (int i = 0; i < 5; i++)
+    {
+        <p>
+            <label>Inside my loop @i</label>
+        </p>
+    }
+
+    @{
+        List<int> myOverDueList = new List<int>();
+
+        for (int i = 0; i < myOverDueList; i++)
+        {
+            myOverDueList.Add(string.Format("Item number : {0}", i));
+        }
+    }*@
